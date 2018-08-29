@@ -48,14 +48,14 @@ function addButtonToBox(box,text,url){
 
 function findDurl(s){
 	var durl;
-	for(i=3;i<7;i++){
+	for(i=3;i<10;i++){
 		durl=s[i].text;
 		if(durl.includes('__playinfo__'))return durl;
 	}
 	return false;
 }
 
-function main(){
+(function(){
 	durl=findDurl(document.getElementsByTagName('script'));
 	if(!durl){
 		alert('获取下载地址失败！');
@@ -68,6 +68,4 @@ function main(){
 	addTextToBox(box,"下载地址：");
 	for(i=0;i<durl.length;i++)
 		addButtonToBox(box,'片段'+(i+1),durl[i].url.toString());
-}
-
-main();
+})();
