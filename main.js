@@ -27,7 +27,11 @@ function addButtonStyle(){
 
 function addButtonBox(){
 	buttonbox=document.createElement('div');
-	document.getElementById('viewbox_report').appendChild(buttonbox);
+	e=document.getElementById('viewbox_report');
+	if(!e){
+		e=document.getElementById('bangumi_header');
+	}
+	e.appendChild(buttonbox);
 	return buttonbox;
 }
 
