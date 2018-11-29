@@ -46,26 +46,32 @@ function addButtonToBox(box,text,url){
 	box.appendChild(e);
 }
 
-function findDurl(s){
-	var durl;
-	for(i=3;i<10;i++){
-		durl=s[i].text;
-		if(durl.includes('__playinfo__'))return durl;
-	}
-	return false;
-}
-
-(function(){
-	durl=findDurl(document.getElementsByTagName('script'));
-	if(!durl){
-		alert('获取下载地址失败！');
-		return false;
-	}
-	eval(durl);
-	durl=window.__playinfo__.durl;
+(()=>{
+	var n=1;
+	var time=0;
+	var prevurl="",url;
+	var duration=player.getDuration();
+	
 	addButtonStyle();
-	box=addButtonBox();
+	var box=addButtonBox();
 	addTextToBox(box,"下载地址：");
-	for(i=0;i<durl.length;i++)
-		addButtonToBox(box,'片段'+(i+1),durl[i].url.toString());
+	
+	player.play();
+	var timer=setInterval(()=>{
+		if(player.getCurrentTime()>time){
+			url=player.getPlayurl();
+			if(url!=prevurl){
+				//console.log(url);
+				addButtonToBox(box,'片段'+n++,url.toString());
+				prevurl=url;
+			}
+			time+=180;
+			if(time>duration){
+				player.seek(0);
+				clearInterval(timer);
+			}else{
+				player.seek(time);
+			}
+		}
+	},500)
 })();
